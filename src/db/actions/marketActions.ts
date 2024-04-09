@@ -1,9 +1,6 @@
-import { markets } from "../schema";
-import { item } from "../schema";
-import { account } from "../schema";
+import { markets, item, account  } from "../schema";
 import db from "../drizzle";
-import { asc, eq, not } from 'drizzle-orm';
-import {v4 as uuidv4} from 'uuid';
+import { asc, eq, not, count, and, sql  } from 'drizzle-orm';
 
 async function getMinecraftItemData(namespacedId: string) {
     try {
@@ -17,7 +14,7 @@ async function getMinecraftItemData(namespacedId: string) {
   }
 
 
-export const createMarket = async (name: string, ownerId: number) => {
+export const createMarket = async (name: string, ownerId: any) => {
     await db.insert(markets).values({
         name: name,
         ownerId: ownerId,
@@ -31,18 +28,9 @@ export const getAllMarkets = async () => {
     return data;
 }
 
-export const createAccount = async () => {
-    await db.insert(account).values({
-        username: "thebooboo",
-        password: "test",
-        accountName: "test",
-        discord: "test",
-        nationName: "test",
-    });
+
+export const getMarketAllItemsCount = async (marketId: number) => {
+    const data = await db.select({ count: count() }).from(item).where(eq(item.marketId, marketId)).execute();
+    return data[0].count;
 }
 
-
-
-/*export const addItemToMarket = async (itemNamespacedId: string, amount: number, marketId: number) => {
-
-}*/

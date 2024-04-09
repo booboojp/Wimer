@@ -1,6 +1,24 @@
-import {addTodo, getData, editTodo, toggleTodo, deleteTodo} from "./db/actions/todoActions";
 import {createMarket, deleteMarket, getAllMarkets} from "./db/actions/marketActions";
-import {createAccount} from "./db/actions/marketActions";
-//createMarket(getRandomInt(1, 10000), "Shop Haven", 1);
+import {createAccount, viewAccountDataById, viewAccountDataByUsername, editAccountUsername, editAccountPassword, editAccountAccountName, editAccountDiscord, editAccountNationName } from "./db/actions/accountActions";
+import {addItemToMarket, findAllItemTypesInMarket} from "./db/actions/itemActions";
+const exit = async() => {
+    process.exit();
+}
+/*createAccount("thebooboo", "123456789", "Taran", "thebooboo", "Oblivion")
+    .then(() => { 
+        viewAccountDataById("thebooboo")
+            .then((data) => { 
+                console.log(data);})
+    }).finally(() => {
+        process.exit();
+    });*/
 
-const prompt: string = "(1) Add\n(2) View\n(3) Delete\n";
+/*viewAccountDataById("2").then((data) => {
+    console.log(data);
+    exit()
+});*/
+
+viewAccountDataByUsername("thebooboo").then((data) => {
+    console.log(data);
+    exit()
+});

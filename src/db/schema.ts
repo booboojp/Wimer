@@ -1,20 +1,10 @@
 import { serial, integer, text, boolean, timestamp, uuid, pgTable } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-function getRandomInt(min: number, max: number): number {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-export const todo = pgTable("todo", {
-  id: integer("id").primaryKey(),
-  text: text("text").notNull(),
-  done: boolean("done").default(false).notNull(),
-});
 
 export const markets = pgTable("markets", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: text("name").notNull(),
-  ownerId: integer("owner_id")
+  ownerId: uuid("owner_id")
             .notNull()
             .references(() => account.id),
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -31,12 +21,13 @@ export const account = pgTable("account", {
   nationName: text("nation_name").notNull(),
 });
 
-export const item = pgTable("item", {
-  id: serial("id").primaryKey(),
+export const item = pgTable("item", { 
+  id: uuid("id").primaryKey().defaultRandom(),
   marketId: integer("market_id")
               .notNull()
-              .references(() => markets.id),
+              .references(() => markets.id).unique(),
   name: text("name").notNull(),
+  namespacedId: text("namespaced_id").notNull(),
   amount: integer("amount").notNull(),
 });
 
